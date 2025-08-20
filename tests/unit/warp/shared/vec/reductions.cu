@@ -13,7 +13,10 @@ struct vec_norm {
     template<int S, int NW, gl_t GL>
     __host__ static void host_func(const std::vector<float> &i_ref, std::vector<float> &o_ref) {
         // turns out to get the numerics right in bf16 you have to actually simulate the reduction tree :/
-        kittens::bf16 sum[32] = __float2bfloat16(0.f);
+        kittens::bf16 sum[32];
+        for (int i = 0; i < 32; i++) {
+            sum[i] = __float2bfloat16(0.f);  // 运行时初始化
+        }
         if constexpr (S > 1) {
             for(int i = 0; i < 32; i++) sum[i] = __float2bfloat16(abs(i_ref[i]));
             for(int i = 32; i < o_ref.size(); i++) sum[i%32] += __float2bfloat16(abs(i_ref[i]));
