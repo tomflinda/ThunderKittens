@@ -3,7 +3,7 @@
 # to spend a *long* time compiling. (like, HOURS single-threaded.)
 
 # GPU Selection: Set to either 4090 or H100
-GPU_TARGET=H100
+GPU_TARGET=A100
 COMP_LEVEL=fast
 
 # Compiler
@@ -34,7 +34,7 @@ endif
 ifeq ($(GPU_TARGET),4090)
 NVCCFLAGS+= -arch=sm_89 -DKITTENS_4090
 else ifeq ($(GPU_TARGET),A100)
-NVCCFLAGS+= -arch=sm_80 -DKITTENS_A100
+NVCCFLAGS+= -arch=sm_80 -DKITTENS_A100 -lcuda -lcudart
 else ifeq ($(GPU_TARGET),H100)
 NVCCFLAGS+= -arch=sm_90a -DKITTENS_HOPPER -lcuda -lcudart
 endif
